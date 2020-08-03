@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentResults;
+using FluentResultsMediatr.Model;
 using FluentResultsMediatr.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -36,7 +37,23 @@ namespace FluentResultsMediatr.Controllers
             var result = await _mediator.Send(new GetWeatherForecastByIdQuery(id));
             if (result.IsFailed)
             {
-                return NotFound(result);
+                return NotFound(result.Reasons);
+            }
+
+            return Ok(result);
+        }    
+        
+        // GET api/<WeatherForecastController>/5
+        [HttpGet("no-typed/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<WeatherForecast>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Result))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result))]
+        public async Task<IActionResult> GetWithNoTypedResult(int id)
+        {
+            var result = await _mediator.Send(new GetWeatherForecastByIdNoTypedResultQuery(id));
+            if (result.IsFailed)
+            {
+                return NotFound(result.Reasons);
             }
 
             return Ok(result);

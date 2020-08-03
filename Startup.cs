@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
+using FluentResults;
 using FluentResultsMediatr.Behavior;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -86,12 +87,8 @@ namespace FluentResultsMediatr
                 .AsClosedTypesOf(typeof(IRequestHandler<,>));
             // Register Behavior Pipeline
             builder.RegisterGeneric(typeof(ValidationPipeline<,>)).As(typeof(IPipelineBehavior<,>));
+           // builder.RegisterSource<ValidationPipeline<IRequest<Result>, Result>>().As(typeof(IPipelineBehavior<,>));
 
-            // register all I*Services
-            builder.RegisterAssemblyTypes(assembly)
-                .Where(t => t.Name.EndsWith("Service"))
-                .AsImplementedInterfaces()
-                .InstancePerDependency();
         }
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace FluentResultsMediatr
+namespace FluentResultsMediatr.Model
 {
     public class WeatherForecast
     {

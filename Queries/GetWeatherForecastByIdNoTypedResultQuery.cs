@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,30 +10,33 @@ using MediatR;
 
 namespace FluentResultsMediatr.Queries
 {
-    public class GetWeatherForecastByIdQuery: IRequest<Result>
+    /// <summary>
+    /// This works!
+    /// </summary>
+    public class GetWeatherForecastByIdNoTypedResultQuery: IRequest<Result>
     {
         public int Id { get; }
 
-        public GetWeatherForecastByIdQuery(int id)
+        public GetWeatherForecastByIdNoTypedResultQuery(int id)
         {
             Id = id;
         }
     }
     
-    public class GetWeatherForecastByIdValidator : AbstractValidator<GetWeatherForecastByIdQuery>
+    public class GetWeatherForecastByIdNoTypedResultQueryValidator : AbstractValidator<GetWeatherForecastByIdNoTypedResultQuery>
     {
-        public GetWeatherForecastByIdValidator()
+        public GetWeatherForecastByIdNoTypedResultQueryValidator()
         {
             RuleFor(x => x.Id).GreaterThan(0);
         }
     }
     
-    public class GetWeatherForecastByIdHandler : IRequestHandler<GetWeatherForecastByIdQuery, Result>
+    public class GetWeatherForecastByIdNoTypedResultQueryHandler : IRequestHandler<GetWeatherForecastByIdNoTypedResultQuery, Result>
     {
-        public async Task<Result> Handle(GetWeatherForecastByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(GetWeatherForecastByIdNoTypedResultQuery request, CancellationToken cancellationToken)
         {
            
-            List<WeatherForecast> weatherForecastDb = new List<WeatherForecast>();
+            var weatherForecastDb = new List<WeatherForecast>();
 
             for (int i = 1; i < 11; i++)
             {
