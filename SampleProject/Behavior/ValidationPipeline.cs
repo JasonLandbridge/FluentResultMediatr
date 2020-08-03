@@ -13,7 +13,7 @@ namespace FluentResultsMediatr.Behavior
         where TResponse : ResultBase, new()
         // We need a common parent between Result and Result<T>,
         // and we need the new() constraint because we're going to instantiate the TResponse
-        // The new() constraint does require an a parameterless constructor in ResultBase,
+        // The new() constraint does require a parameterless constructor in ResultBase,
         // otherwise the pipeline is not called
     {
         private readonly IValidator<TRequest> _compositeValidator;
@@ -41,7 +41,7 @@ namespace FluentResultsMediatr.Behavior
 
                 // Instantiate the TResponse
                 var f = new TResponse();
-                // Add error
+                // Add error, this is a bit hacky as I didn't have an easy way to add an error to ResultBase
                 f.WithReason(error);
                 // Returns non-null and valid result of type TResponse
                 return f;
