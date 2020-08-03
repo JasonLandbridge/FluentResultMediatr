@@ -9,9 +9,12 @@ using Microsoft.VisualBasic;
 
 namespace FluentResultsMediatr.Behavior
 {
-    public class ValidationPipeline<TRequest, TResponse>
-        : IPipelineBehavior<TRequest, TResponse>
-        where TResponse : ResultBase
+    public class ValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+        where TResponse : ResultBase, new()
+        // We need a common parent between Result and Result<T>,
+        // and we need the new() constraint because we're going to instantiate the TResponse
+        // The new() constraint does require an a parameterless constructor in ResultBase,
+        // otherwise the pipeline is not called
     {
         private readonly IValidator<TRequest> _compositeValidator;
 
@@ -36,9 +39,12 @@ namespace FluentResultsMediatr.Behavior
                     error.Reasons.Add(new Error(validationFailure.ErrorMessage));
                 }
 
-                // Hard coding the type parameter does convert to TResponse correctly
-                var conversion = Result.Fail<WeatherForecast>(error) as TResponse;
-                return conversion;
+                // Instantiate the TResponse
+                var f = new TResponse();
+                // Add error
+                f.WithReason(error);
+                // Returns non-null and valid result of type TResponse
+                return f;
             }
 
             return await next();
