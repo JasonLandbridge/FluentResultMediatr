@@ -34,13 +34,22 @@ namespace FluentResultsMediatr.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result))]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _mediator.Send(new GetWeatherForecastByIdQuery(id));
-            if (result.IsFailed)
+            try
             {
-                return NotFound(result.Reasons);
-            }
+                var result = await _mediator.Send(new GetWeatherForecastByIdQuery(id));
+                if (result.IsFailed)
+                {
+                    return NotFound(result.Reasons);
+                }
 
-            return Ok(result);
+                return Ok(result);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }    
         
         // GET api/<WeatherForecastController>/5

@@ -10,7 +10,7 @@ using MediatR;
 
 namespace FluentResultsMediatr.Queries
 {
-    public class GetWeatherForecastByIdQuery: IRequest<Result>
+    public class GetWeatherForecastByIdQuery: IRequest<Result<WeatherForecast>>
     {
         public int Id { get; }
 
@@ -28,9 +28,14 @@ namespace FluentResultsMediatr.Queries
         }
     }
     
-    public class GetWeatherForecastByIdHandler : IRequestHandler<GetWeatherForecastByIdQuery, Result>
+    public class GetWeatherForecastByIdHandler : IRequestHandler<GetWeatherForecastByIdQuery, Result<WeatherForecast>>
     {
-        public async Task<Result> Handle(GetWeatherForecastByIdQuery request, CancellationToken cancellationToken)
+        public GetWeatherForecastByIdHandler()
+        {
+            
+        }
+        
+        public async Task<Result<WeatherForecast>> Handle(GetWeatherForecastByIdQuery request, CancellationToken cancellationToken)
         {
            
             List<WeatherForecast> weatherForecastDb = new List<WeatherForecast>();
